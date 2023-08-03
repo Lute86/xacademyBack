@@ -1,0 +1,26 @@
+
+Cli generate (Model)
+**************
+
+sequelize model:generate --name users --attributes first_name:string,last_name:string,email:string,role:string,password:string
+sequelize model:generate --name courses --attributes course_name:string,description:string,modality:string,duration:string,price:decimal,active:boolean,start_date:dateonly,finish_date:dateonly,type:string
+sequelize model:generate --name teachers --attributes first_name:string,last_name:string
+sequelize model:generate --name queries --attributes name:string,email:string,reason:string,description:string,date:dateonly
+
+
+#######################################################
+
+Cli migration (Table)
+*************
+
+db:migrate
+
+
+#######################################################
+
+
+Cli seed
+********
+
+
+db:seed:all

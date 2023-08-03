@@ -1,0 +1,54 @@
+Tablas
+******
+
+Users: id, first_name, last_name, email, role, password(hashed), course_id(relacion*)
+  -Roles: user(default), admin, teacher 
+
+Courses: id, course_name, description, modality, duration, price, active, start_date, finish_date, type, teacher(relacion*)
+  -modality: presencial/distancia
+  -duration: semanas
+  -type: carrera/capacitacion/etc.
+
+Teachers: id, first_name, last_name 
+
+Queries: id, name, email, reason, description, date
+
+*Relaciones en los junction models
+
+
+1.Tabla "Users":
+
+-id (primary key)
+-first_name
+-last_name
+-email
+-role (user-default-/admin/teacher)
+-password (hashed)
+*-course_id (foreign key relacionada a courses)
+
+2.Tabla "Courses":
+-id (primary key)
+-course_name
+-description
+-modality (presencial/distancia)
+-duration (semanas)
+-price
+-active
+-start_date
+-finish_date
+-type (carrera/capacitacion/etc.)
+*-teacher (foreign key relacionada a teachers)
+
+3.Tabla "Teachers":
+-id (primary key)
+-first_name
+-last_name
+
+4.Tabla "Queries":
+-id (primary key)
+-name
+-email
+-reason
+-description
+-date
+

@@ -1,0 +1,251 @@
+Modelos
+*******
+
+-----
+Users
+-----
+const sequelize = require('sequelize');
+const Users = sequelize.define("Users", {
+  id: {
+    type: sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  first_name: {
+    type: sequelize.STRING,
+    allowNull: false,
+    validate: {
+      isAlpha: true,
+    },
+  },
+  last_name: {
+    type: sequelize.STRING,
+    allowNull: false,
+    validate: {
+      isAlpha: true,
+    },
+  },
+  email: {
+    type: sequelize.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true,
+    },
+  },
+  role: {
+    type: sequelize.STRING,
+    setDefaultValue: "user"
+  },
+  password: {
+    type: sequelize.STRING,
+    allowNull: false,
+    validate: {
+      len: {
+        args: [6, undefined], // Minimum length is 6 characters
+        msg: "Password must be at least 6 characters long with at least one letter and one number.",
+      },
+      hasAtLeastOneNumberAndOneLetter(value) {
+        if (!/\d/.test(value) || !/[a-zA-Z]/.test(value)) {
+          throw new Error(
+            "Password must contain at least one number, one letter and min 6 characters."
+          );
+        }
+      },
+    },
+  },
+  {
+    paranoid: true, // Enable soft deletes
+    timestamps: true, // Include timestamps (createdAt, updatedAt, deletedAt)
+    deletedAt: "deleted_at", // Use "deleted_at" as the name for the deletion timestamp column
+  },
+});
+
+module.exports = Users
+
+-------
+Courses
+-------
+const sequelize = require('sequelize');
+
+const Courses = sequelize.define('Courses', {
+  id: {
+    type: sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  course_name: {
+    type: sequelize.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: sequelize.STRING,
+    allowNull: false,
+  },
+  modality: {
+    type: sequelize.STRING,
+    allowNull: false,
+  },
+  duration: {
+    type: sequelize.STRING,
+    allowNull: false,
+  },
+  price: {
+    type: sequelize.DECIMAL,
+    allowNull: true,
+  },
+  active: {
+    type: sequelize.BOOLEAN,
+    defaultValue: true,
+  },
+  start_date: {
+    type: DataTypes.DATEONLY,
+    allowNull: true,
+  },
+  finish_date: {
+    type: DataTypes.DATEONLY,
+    allowNull: true,
+  },
+  type: {
+    type: DataTypes.DATEONLY,
+    allowNull: true,
+  },
+  {
+    paranoid: true, 
+    timestamps: true, 
+    deletedAt: "deleted_at", 
+  },
+  
+});
+
+module.exports = Courses
+
+--------
+Teachers
+--------
+
+const sequelize = require('sequelize');
+
+const Teachers = sequelize.define('Teachers', {
+  id: {
+    type: sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  first_name: {
+    type: sequelize.STRING,
+    allowNull: false,
+  },
+  last_name: {
+    type: sequelize.STRING,
+    allowNull: false,
+  },
+  {
+    paranoid: true, 
+    timestamps: true, 
+    deletedAt: "deleted_at", 
+  },
+ 
+});
+
+module.exports = Teachers
+
+-------
+Queries
+-------
+
+const sequelize = require('sequelize');
+
+const Queries = sequelize.define('Queries', {
+  id: {
+    type: sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  name: {
+    type: sequelize.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: sequelize.STRING,
+    allowNull: false,
+    validate: {
+      isEmail: true,
+    },
+  reason: {
+    type: sequelize.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: sequelize.STRING,
+    allowNull: false,
+  },
+  date: {
+    type: sequelize.DATEONLY,
+    defaultValue: DataTypes.NOW,
+  },
+  {
+    paranoid: true, 
+    timestamps: true, 
+    deletedAt: "deleted_at", 
+  },
+}
+});
+
+module.exports = Queries
+
+
+#######################################################
+
+
+Relations 
+*********
+
+Users-Courses n-n //many-many
+Necesita una tabla o modelo intermedio en la bd para realizar las uniones.
+
+Junction Model
+
+const UserCourses = sequelize.define('UserCourses', {
+  course_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Users,
+      key: 'id'
+    }
+  },
+  user_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Courses
+      key: 'id'
+    }
+  }
+});
+Courses.belongsToMany(Users, { through: UserCourses });
+Users.belongsToMany(Courses, { through: UserCourses });
+
+
+Teachers-Courses n-n //many-many
+
+Junction Model
+
+const TeacherCourses = sequelize.define('TeacherCourses', {
+  course_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Teachers,
+      key: 'id'
+    }
+  },
+  teacher_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Courses
+      key: 'id'
+    }
+  }
+});
+Courses.belongsToMany(Teachers, { through: TeacherCourses });
+Teachers.belongsToMany(Courses, { through: TeacherCourses });
+

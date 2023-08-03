@@ -1,0 +1,54 @@
+Routes
+******
+--------
+Sin auth
+--------
+
+1. Autenticación de usuarios:
+   - `POST /auth/login`: Inicio de sesión.
+   - `POST /auth/register`: Registro de nuevos usuarios.
+
+2. Gestión de contenido web:
+   - `GET /course`: Obtener todos los cursos de capacitación.
+   - `GET /course/<:courseId>`: Obtener detalles de un curso de capacitación específico.
+      +<params> crear logica para buscar por distintos parametros
+   - `POST /queries` : Crear nueva consulta 
+
+3. Gestión de usuarios:
+   - `POST /user`: Crear un nuevo usuario. (role: user por defecto)
+
+--------
+Con auth
+--------
+(Front muestra opciones de crud segun credenciales)
+
+Users
+
+3. Gestión de usuarios:
+   - `PUT /user/:userId`: Actualizar usuario existente. (Sin modificar role/course_id)
+   - `DELETE /user/:userId`: Eliminar un usuario. 
+4. Gestión de cursos de capacitación:
+   - `POST /user/:userId/course/:courseId`: Agregar curso al usuario. (Al pagar curso crear relacion)
+      + Encontrar y guardar(variables) usuario y curso
+      + Asociar usuario con curso a traves de la tabla intermedia
+
+Admin 
+
+3. Gestión de usuarios:
+   - `POST /admin/user`: Crear un nuevo usuario. (Cualquier rol)
+   - `PUT /admin/user/:userId`: Actualizar usuario existente.
+   - `DELETE /admin/user/:userId`: Eliminar un usuario.
+4. Gestión de cursos de capacitación:
+   - `POST /admin/course`: Crear un nuevo curso de capacitación.
+   - `PUT /admin/course/:courseId`: Actualizar un curso de capacitación existente.
+   - `DELETE /admin/curse/:courseId`: Eliminar un curso de capacitación.
+   - `POST /admin/course/:courseId/teacher/:teacherId`: Agregar docente al curso
+
+5. Gestión de docentes:
+   - `GET /admin/teacher`: Obtener la lista de todos los docentes.
+   - `GET /admin/teacher/:teacherId`: Obtener detalles de un docente específico.
+   - `POST /admin/teacher`: Registrar un nuevo docente.
+   - `PUT /admin/teacher/:teacherId`: Actualizar información de un docente existente.
+   - `DELETE /admin/teacher/:teacherId`: Eliminar un docente.
+   - `POST /admin/teacher/:teacherId/course/:courseId`: Agregar curso al docente
+
