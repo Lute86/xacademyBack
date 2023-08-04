@@ -1,5 +1,7 @@
 require("dotenv").config();
-const PORT = process.env.PORT;
+
+//Database connection
+const { connection } = require('./config/files/sequelize.config');
 
 // Express Dependencies:
 const express = require("express");
@@ -91,8 +93,21 @@ models.sequelize
 
 app.use("/", routes);
 
-app.listen(PORT, async () => {
-  console.log(`Server running on port: ${PORT}`);
-});
+
+//Initialize db
+connection
+  .authenticate()
+  .then(() => {
+    console.log('Database connection has been established successfully.');
+
+    // Start the server
+    const PORT = process.env.PORT;
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}.`);
+    });
+  })
+  .catch((err) => {
+    console.error('Unable to connect to the database:', err);
+  });
 
 module.exports = app;
