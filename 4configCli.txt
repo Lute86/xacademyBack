@@ -1,0 +1,81 @@
+Comandos sequelize-cli
+si al intentar correr los comandos desde vsc (por ejemplo) tira un error de autorizacion, correrlos desde la cmd en el path de la app
+
+#######################################################
+
+Cli init
+********
+
+sequelize init
+
+crea el archivo config.json (modificado a config.js eventualmente para trabajar con js)
+
+#######################################################
+
+
+Cli create (Database)
+**********
+
+sequelize db:create
+
+crea la base según el config.js => revisar el config y modificar el .env respectivamente
+
+ej.
+...
+  "development": {
+    "username": "your_db_username",
+    "password": "your_db_password",
+    "database": "your_db_name", => nombre base
+    "host": "localhost",
+    "dialect": "mysql"
+  },...
+
+#######################################################
+
+
+
+Cli generate (Model)
+**************
+
+sequelize model:generate --name users --attributes first_name:string,last_name:string,email:string,role:string,password:string
+sequelize model:generate --name courses --attributes course_name:string,description:string,modality:string,duration:string,price:decimal,active:boolean,start_date:dateonly,finish_date:dateonly,type:string
+sequelize model:generate --name teachers --attributes first_name:string,last_name:string
+sequelize model:generate --name queries --attributes name:string,email:string,reason:string,description:string,date:dateonly
+
+Genera archivos: 
+modelo  con nombre (--name) xxxx
+migration => se utiliza para crear/modificar la tabla en la db basado en la definicion del modelo
+
+#######################################################
+
+
+Cli migration (Table)
+*************
+Utiliza el archivo de migration para crear/modificar las tablas de la base. Se corre luego del generate
+
+sequelize db:migrate => corre todas las migraciones
+sequelize db:migrate:up --name 20230804121658-create-users => corre migracion especifica
+sequelize db:migrate:undo => deshace la ultima migracion
+sequelize db:migrate:undo --to 20230804121658-create-users => deshace a migracion especificada
+
+Generar un nuevo archivo migracion
+sequelize migration:generate --name modify_courses_attributes => para modificar al usar db:migrate
+
+
+#######################################################
+
+
+Cli seed
+********
+Llenar las tablas con datos
+
+
+sequelize seed:generate --name seed_courses => generar archivo seed
+
+
+db:seed:all => rellenar tablas
+db:seed:undo:all =>deshacer seeding
+
+
+#######################################################
+

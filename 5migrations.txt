@@ -1,0 +1,8 @@
+A tener en cuenta:
+-Cuando se hace un db:migrate, los archivos migrados no se vuelven a migrar, por mas que haya cambios en ellos
+Sequelize mantiene un registro en la tabla "SequelizeMeta" para indicar que esa migración ha sido aplicada en la base de datos.
+-Para generar cambios:
+  + crear una nueva migracion
+  + deshacer migracion y rehacer con los cambios
+  + cambiar la tabla directamente en la tabla, si no modifican la estructura
+-Los archivos migration tienen funciones asincronas up (realizar) y down (deshacer). 
