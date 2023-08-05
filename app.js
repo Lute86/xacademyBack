@@ -81,33 +81,33 @@ if (config.environment === "production") {
   app.set("trust proxy", 1); // trust first proxy
 }
 
-models.sequelize
-  .authenticate()
+
+
+//initialize DB
+const DBworking = { status: false }
+models.sequelize.authenticate()
   .then(() => {
-    logger.api.debug("Conexión con la Base de Datos: EXITOSA");
+    logger.api.debug('Conexión con la Base de Datos: EXITOSA');
+    DBworking.status = true
+  })
+  .then(()=>{
+    // Start the server
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      logger.api.debug(`Server is running on port ${PORT}.`);
+    })
   })
   .catch((err) => {
-    logger.api.error("Conexión con la Base de Datos: FALLIDA");
+    if(!DBworking.status){
+      logger.api.error('Database connection: FAILED. Server won\'t run');
+    }else{
+      logger.api.error('Server connection FAILED');
+    }
     logger.api.error(err);
+    DBworking.status = false
   });
 
 app.use("/", routes);
 
-
-//Initialize db
-connection
-  .authenticate()
-  .then(() => {
-    console.log('Database connection has been established successfully.');
-
-    // Start the server
-    const PORT = process.env.PORT;
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}.`);
-    });
-  })
-  .catch((err) => {
-    console.error('Unable to connect to the database:', err);
-  });
 
 module.exports = app;
