@@ -1,10 +1,10 @@
 Tablas
 ******
 
-Users: id, first_name, last_name, email, role, password(hashed), course_id(relacion*)
+Users: id, first_name, last_name, email, role, password(hashed)
   -Roles: user(default), admin, teacher 
 
-Courses: id, course_name, description, modality, duration, price, active, start_date, finish_date, type, teacher(relacion*)
+Courses: id, course_name, description, modality, duration, price, active, start_date, finish_date, type
   -modality: presencial/distancia
   -duration: semanas
   -type: carrera/capacitacion/etc.
@@ -19,36 +19,33 @@ Queries: id, name, email, reason, description, date
 1.Tabla "Users":
 
 -id (primary key)
--first_name
--last_name
--email
--role (user-default-/admin/teacher)
--password (hashed)
-*-course_id (foreign key relacionada a courses)
+-first_name: string
+-last_name: string
+-email: string
+-role (user-default-/admin/teacher): string
+-password (hashed): string
 
 2.Tabla "Courses":
 -id (primary key)
--course_name
--description
--modality (presencial/distancia)
--duration (semanas)
--price
--active
--start_date
--finish_date
--type (carrera/capacitacion/etc.)
-*-teacher (foreign key relacionada a teachers)
+-course_name: string
+-description: string
+-modality (presencial/distancia): string
+-duration (semanas/horas): string
+-price: integer
+-active(true-default-/false): string 
+-start_date: dateonly
+-finish_date: dateonly
+-type (carrera/capacitacion/etc.): string
 
 3.Tabla "Teachers":
 -id (primary key)
--first_name
--last_name
+-first_name: string
+-last_name: string
 
 4.Tabla "Queries":
 -id (primary key)
--name
--email
--reason
--description
--date
+-name: string
+-email: string
+-reason: string 
+-description: string
 

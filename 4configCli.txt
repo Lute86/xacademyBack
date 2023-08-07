@@ -37,14 +37,18 @@ ej.
 Cli generate (Model)
 **************
 
-sequelize model:generate --name users --attributes first_name:string,last_name:string,email:string,role:string,password:string
-sequelize model:generate --name courses --attributes course_name:string,description:string,modality:string,duration:string,price:decimal,active:boolean,start_date:dateonly,finish_date:dateonly,type:string
-sequelize model:generate --name teachers --attributes first_name:string,last_name:string
-sequelize model:generate --name queries --attributes name:string,email:string,reason:string,description:string,date:dateonly
+sequelize model:generate --name users --attributes first_name:string,last_name:string,email:string,role:string,password:string,createdAt:date,updatedAt:date,deletedAt:date
+sequelize model:generate --name courses --attributes course_name:string,description:string,modality:string,duration:string,price:decimal,active:boolean,start_date:dateonly,finish_date:dateonly,type:string,,createdAt:date,updatedAt:date,deletedAt:date
+sequelize model:generate --name teachers --attributes first_name:string,last_name:string,,createdAt:date,updatedAt:date,deletedAt:date
+sequelize model:generate --name queries --attributes name:string,email:string,reason:string,description:string,date:dateonly,createdAt:date,updatedAt:date,deletedAt:date
+
+sequelize model:generate --name userCourses --attributes userId:integer,courseId:integer,createdAt:date,updatedAt:date,deletedAt:date
+sequelize model:generate --name teacherCourses --attributes teacherId:integer,courseId:integer,createdAt:date,updatedAt:date,deletedAt:date
+
 
 Genera archivos: 
-modelo  con nombre (--name) xxxx
-migration => se utiliza para crear/modificar la tabla en la db basado en la definicion del modelo
+-modelo  con nombre (--name nombre_elegido)
+-migration => se utiliza para crear/modificar la tabla en la db basado en la definicion del modelo
 
 #######################################################
 
@@ -54,12 +58,12 @@ Cli migration (Table)
 Utiliza el archivo de migration para crear/modificar las tablas de la base. Se corre luego del generate
 
 sequelize db:migrate => corre todas las migraciones
-sequelize db:migrate:up --name 20230804121658-create-users => corre migracion especifica
+sequelize db:migrate --name 20230804121658-create-users => corre migracion especifica
 sequelize db:migrate:undo => deshace la ultima migracion
 sequelize db:migrate:undo --to 20230804121658-create-users => deshace a migracion especificada
 
 Generar un nuevo archivo migracion
-sequelize migration:generate --name modify_courses_attributes => para modificar al usar db:migrate
+sequelize migration:generate --name nombre_elegido => para modificar al usar db:migrate
 
 
 #######################################################

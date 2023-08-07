@@ -107,7 +107,7 @@ const Courses = sequelize.define('Courses', {
     allowNull: true,
   },
   type: {
-    type: DataTypes.DATEONLY,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   {
@@ -179,10 +179,6 @@ const Queries = sequelize.define('Queries', {
   description: {
     type: sequelize.STRING,
     allowNull: false,
-  },
-  date: {
-    type: sequelize.DATEONLY,
-    defaultValue: DataTypes.NOW,
   },
   {
     paranoid: true, 

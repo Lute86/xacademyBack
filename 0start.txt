@@ -1,14 +1,45 @@
--Crear .env => rellenar con la info necesaria*
+1. Crear .env  
+**************
+- rellenar con la info necesaria
+(MySql Workbench para revisar puerto, usuario, pass)
 
-*Usar MySql Workbench para revisar datos de la creacion/conexion a la base
 
--Crear base desde la terminal (si no tienen los permisos en vsc desde la cmd*)
-*cambiar el path al directorio de la app
+2. Crear base de datos:
+**********************
 
-sequelize db:create
+Comando para crear base desde la terminal*
 
--Una vez creada la base correr node app.js en el directorio de la app en vsc(o ide preferido)
+sequelize db:create => crea la base con el nombre de base que se puso en el .env
+
+(si no tienen los permisos en VSC desde la CMD => cambiar el path al directorio de la app: cd "directorio" -vsc click derecho a la carpeta, copy path-) 
+
+
+3. Correr las migraciones de a una:
+**********************************
+
+1. sequelize db:migrate --name models_tables
+2. sequelize db:migrate --name models_relations
+
+Las migraciones van a crear las tablas basadas en los modelos en la base.
+
+4. Correr seeding:
+*****************
+
+sequelize db:seed:all
+
+Rellena de info las tablas creadas. 
+
+
+5. Correr servidor:
+******************
+
+node app.js en el directorio de la app en vsc(o ide preferido)
+
+
+6. Checkear servidor:
+********************
 
 -Usar postman/thunder client o algun http client y probar
 `GET localhost:4001/ping`  (donde dice 4001 especificar el puerto elegido en el .env)
-deberia devolver /pong
+
+-deberia devolver /pong
