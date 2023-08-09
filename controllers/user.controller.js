@@ -22,6 +22,19 @@ const getUser = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const user = await userService.getAllUsers();
+    if (!user) {
+      res.status(404).json({ action: "getAllUsers", error: "User Not Found" });
+    } else {
+      res.json(user);
+    }
+  } catch (err) {
+    res.status(500).json({ action: "getAllUsers", error: err.message });
+  }
+};
+
 const updateUser = async (req, res) => {
   try {
     const user = await userService.updateUser(req.params.userId, req.body);
@@ -49,4 +62,4 @@ const deleteUser = async (req, res) => {
   }
 }
 
-module.exports = { createUser, getUser, updateUser, deleteUser };
+module.exports = { createUser, getUser, updateUser, deleteUser, getAllUsers };

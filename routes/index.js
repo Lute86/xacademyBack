@@ -11,6 +11,7 @@ const queryRouter = require("./query.routes");
 const userRouter = require("./user.routes");
 const courseRouter = require("./course.routes");
 const authRouter = require("./auth.routes");
+const adminRouter = require("./admin.routes");
 
 
 
@@ -26,6 +27,7 @@ app.use('/query', queryRouter)
 app.use('/user', userRouter)
 app.use('/course', courseRouter)
 app.use('/auth', authRouter)
+app.use('/admin', adminRouter)
 
 
 app.use('/', rootPath.handler);

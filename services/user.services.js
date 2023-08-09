@@ -27,6 +27,16 @@ const getUser = async (userId) => {
   }
 };
 
+const getAllUsers = async () => {
+  try {
+    const user = await users.findAll({ include: { all: true } });
+    return user;
+  } catch (err) {
+    console.error("Error when fetching Users", err);
+    throw err;
+  }
+};
+
 
 const updateUser = async (userId, updates) => {
   try {
@@ -59,7 +69,7 @@ const deleteUser = async (userId) => {
     if (!user) {
       throw new Error("User not found");
     }
-    //Delete Course
+    //Delete User
     await user.destroy();
     return user;
   } catch (err) {
@@ -69,4 +79,4 @@ const deleteUser = async (userId) => {
 };
 
 
-module.exports = { createUser, getUser, updateUser, deleteUser };
+module.exports = { createUser, getUser, updateUser, deleteUser, getAllUsers };
