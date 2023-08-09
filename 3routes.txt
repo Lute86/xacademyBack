@@ -35,20 +35,24 @@ Users
 Admin 
 
 3. Gestión de usuarios:
-   - `POST /admin/user`: Crear un nuevo usuario. (Cualquier rol)
-   - `PUT /admin/user/:userId`: Actualizar usuario existente.
-   - `DELETE /admin/user/:userId`: Eliminar un usuario.
+   - `POST /admin/user/create`: Crear un nuevo usuario. (Cualquier rol)
+   - `PUT /admin/user/:userId`: Actualizar usuario existente. //FALTA
+   - `DELETE /admin/user/delete/:userId`: Eliminar un usuario.
 4. Gestión de cursos de capacitación:
-   - `POST /admin/course`: Crear un nuevo curso de capacitación.
-   - `PUT /admin/course/:courseId`: Actualizar un curso de capacitación existente.
-   - `DELETE /admin/curse/:courseId`: Eliminar un curso de capacitación.
-   - `POST /admin/course/:courseId/teacher/:teacherId`: Agregar docente al curso
+   - `POST /admin/course/create`: Crear un nuevo curso de capacitación.
+   - `PUT /admin/course/update/:courseId`: Actualizar un curso de capacitación existente.
+   - `DELETE /admin/curse/delete/:courseId`: Eliminar un curso de capacitación.
+   - `POST /admin/teacher/:teacherId/course/:courseId`: Agregar docente al curso
+   - `GET /admin/course/related/:courseId`: Obtener curso con todas las relaciones.
 
 5. Gestión de docentes:
-   - `GET /admin/teacher`: Obtener la lista de todos los docentes.
+   - `GET /admin/teacher`: Obtener la lista de todos los docentes. //FALTA
    - `GET /admin/teacher/:teacherId`: Obtener detalles de un docente específico.
-   - `POST /admin/teacher`: Registrar un nuevo docente.
-   - `PUT /admin/teacher/:teacherId`: Actualizar información de un docente existente.
-   - `DELETE /admin/teacher/:teacherId`: Eliminar un docente.
+   - `POST /admin/teacher/create`: Registrar un nuevo docente.
+   - `PUT /admin/teacher/update/:teacherId`: Actualizar información de un docente existente.
+   - `DELETE /admin/teacher/delete/:teacherId`: Eliminar un docente.
    - `POST /admin/teacher/:teacherId/course/:courseId`: Agregar curso al docente
+
+6. Gestión borrados:
+   - `GET /admin/deleted/:param`: Obtener todos los :param(users, teachers o courses) borrados
 
