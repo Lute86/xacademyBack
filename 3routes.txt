@@ -8,9 +8,9 @@ Sin auth
    - `POST /auth/login`: Inicio de sesión.
 
 2. Gestión de contenido web:
-   - `GET /course`: Obtener todos los cursos de capacitación.
-   - `GET /course/<:courseId>`: Obtener detalles de un curso de capacitación específico.
-      +<params> crear logica para buscar por distintos parametros
+   - `GET /course/all`: Obtener todos los cursos de capacitación.
+   - `GET /course/<:param>`: Obtener detalles de un/os curso/s de capacitación específico/s.
+      +param validos: id/course_name/type/modality
    - `POST /query` : Crear nueva consulta 
 
 3. Gestión de usuarios:
