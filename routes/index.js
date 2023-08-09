@@ -10,6 +10,7 @@ const app = Express();
 const queryRouter = require("./query.routes");
 const userRouter = require("./user.routes");
 const courseRouter = require("./course.routes");
+const authRouter = require("./auth.routes");
 
 
 
@@ -24,6 +25,7 @@ app.use('/ping', (req, res) => {
 app.use('/query', queryRouter)
 app.use('/user', userRouter)
 app.use('/course', courseRouter)
+app.use('/auth', authRouter)
 
 
 app.use('/', rootPath.handler);
