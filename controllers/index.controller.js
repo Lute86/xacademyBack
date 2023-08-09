@@ -1,4 +1,5 @@
 const queryController = require("./query.controller");
+const userController = require("./user.controller");
 
 
-module.exports = {queryController};
+module.exports = {queryController, userController};

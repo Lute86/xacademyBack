@@ -6,16 +6,15 @@ Sin auth
 
 1. Autenticación de usuarios:
    - `POST /auth/login`: Inicio de sesión.
-   - `POST /auth/register`: Registro de nuevos usuarios.
 
 2. Gestión de contenido web:
    - `GET /course`: Obtener todos los cursos de capacitación.
    - `GET /course/<:courseId>`: Obtener detalles de un curso de capacitación específico.
       +<params> crear logica para buscar por distintos parametros
-   - `POST /queries` : Crear nueva consulta 
+   - `POST /query` : Crear nueva consulta 
 
 3. Gestión de usuarios:
-   - `POST /user`: Crear un nuevo usuario. (role: user por defecto)
+   - `POST /user/register`: Registro/crear nuevos usuarios.
 
 --------
 Con auth
@@ -25,10 +24,11 @@ Con auth
 Users
 
 3. Gestión de usuarios:
-   - `PUT /user/:userId`: Actualizar usuario existente. (Sin modificar role/course_id)
-   - `DELETE /user/:userId`: Eliminar un usuario. 
+   - `GET /user/my/:userId`: Obtener usuario.
+   - `PUT /user/update/:userId`: Actualizar usuario existente. (Sin modificar rol)
+   - `DELETE /user/delete/:userId`: Eliminar un usuario. 
 4. Gestión de cursos de capacitación:
-   - `POST /user/:userId/course/:courseId`: Agregar curso al usuario. (Al pagar curso crear relacion)
+   - `POST /user/:userId/course/:courseId`: Agregar curso al usuario.
       + Encontrar y guardar(variables) usuario y curso
       + Asociar usuario con curso a traves de la tabla intermedia
 

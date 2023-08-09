@@ -8,6 +8,7 @@ const app = Express();
 
 // Rutas
 const queryRouter = require("./query.routes");
+const userRouter = require("./user.routes");
 
 
 // use=
@@ -17,8 +18,9 @@ app.use('/ping', (req, res) => {
   });
 });
 
-//without mdw
+
 app.use('/query', queryRouter)
+app.use('/user', userRouter) 
 
 app.use('/', rootPath.handler);
 app.use(rootPath.setHeaders);
