@@ -7,6 +7,8 @@ const errors = require('../middleware/error_handler.middleware');
 const app = Express();
 
 // Rutas
+const queryRouter = require("./query.routes");
+
 
 // use=
 app.use('/ping', (req, res) => {
@@ -14,6 +16,10 @@ app.use('/ping', (req, res) => {
     response: 'pong!',
   });
 });
+
+//without mdw
+app.use('/query', queryRouter)
+
 app.use('/', rootPath.handler);
 app.use(rootPath.setHeaders);
 app.use(errors.handler);
