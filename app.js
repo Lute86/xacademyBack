@@ -44,10 +44,10 @@ const sess = {
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: {
-    sameSite: "strict",
-    secure: true,
-  },
+  // cookie: {
+  //   sameSite: "strict",
+  //   secure: true,
+  // },
 };
 if (config.environment === "production") {
   app.set("trust proxy", 1); // trust first proxy

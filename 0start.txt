@@ -36,7 +36,7 @@ Rellena de info las tablas creadas.
 node app.js en el directorio de la app en vsc(o ide preferido)
 
 
-6. Checkear servidor:
+6. Chequear servidor:
 ********************
 
 -Usar postman/thunder client o algun http client y probar

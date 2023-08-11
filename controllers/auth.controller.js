@@ -6,6 +6,9 @@ const validateUser = async (req, res) => {
     const user = await authService.validateUser(req.body);
 
     if (user) {
+      // Store user info in the session upon successful login
+      req.session.user = user;
+      console.log(user.id)
       return res.status(200).json({ user });
     }
 

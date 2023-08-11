@@ -1,4 +1,4 @@
-const {users} = require("../models");
+const { users } = require("../models");
 
 const createUser = async (user) => {
   try {
@@ -14,13 +14,18 @@ const createUser = async (user) => {
   }
 };
 
-const getUser = async (userId) => {
+const getUser = async (req, userId) => {
   try {
-    const user = await users.findByPk(userId, { include: { all: true } });
-    if (user) {
-      console.log(user.firstName);
+    //Validates that user id is the same as the id being fetched
+    if (req.session.user.id == userId) {
+      const user = await users.findByPk(userId, { include: { all: true } });
+      if (user) {
+        console.log(user.firstName);
+      }
+      return user;
+    } else {
+      throw new Error("Access forbidden. Can't access other users data");
     }
-    return user;
   } catch (err) {
     console.error("Error when fetching User", err);
     throw err;
@@ -37,46 +42,52 @@ const getAllUsers = async () => {
   }
 };
 
-
-const updateUser = async (userId, updates) => {
+const updateUser = async (id, userId, updates) => {
   try {
-    //TODO => validate that user id is the same as the id being modified
+    //Validates that user id is the same as the id being updated
+    if (id == userId) {
+      const user = await users.findByPk(userId);
 
-    const user = await users.findByPk(userId);
-    if (!user) {
-      throw new Error("User not found");
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      // Ensure that the role remains as "user" if not provided in the updates object
+      const finalUpdates = { ...updates };
+      if (finalUpdates.hasOwnProperty("role")) {
+        finalUpdates.role = "user";
+      }
+
+      const updatedUser = await user.update(finalUpdates);
+      return updatedUser;
+    } else {
+      throw new Error("Access forbidden. Can't modify other users data");
     }
-
-    // Ensure that the role remains as "user" if not provided in the updates object
-    const finalUpdates = { ...updates };
-    if (finalUpdates.hasOwnProperty("role")) {
-      finalUpdates.role = "user";
-    }
-
-    const updatedUser = await user.update(finalUpdates);
-    return updatedUser;
   } catch (err) {
     console.error("Error when updating User", err);
     throw err;
   }
 };
 
-//TODO => validate that user id is the same as the id being deleted
 // Soft delete user
-const deleteUser = async (userId) => {
+const deleteUser = async (id, userId) => {
   try {
-    const user = await users.findByPk(userId);
-    if (!user) {
-      throw new Error("User not found");
+    //Validates that user id is the same as the id being deleted
+    if (id == userId) {
+      const user = await users.findByPk(userId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+      //Delete User
+      await user.destroy();
+      return user;
+    }else {
+      throw new Error("Access forbidden. Can't modify other users data");
     }
-    //Delete User
-    await user.destroy();
-    return user;
   } catch (err) {
     console.error("Error when deleting User", err);
     throw err;
   }
 };
-
 
 module.exports = { createUser, getUser, updateUser, deleteUser, getAllUsers };

@@ -3,7 +3,7 @@ const Express = require('express');
 // Middlewares:
 const rootPath = require('../middleware/root_path.middleware');
 const errors = require('../middleware/error_handler.middleware');
-
+const { userIsAdminMDW, regularUserMDW } = require('../middleware/auth.mdw')
 const app = Express();
 
 // Rutas
@@ -24,10 +24,10 @@ app.use('/ping', (req, res) => {
 
 
 app.use('/query', queryRouter)
-app.use('/user', userRouter)
+app.use('/user', regularUserMDW, userRouter)
 app.use('/course', courseRouter)
 app.use('/auth', authRouter)
-app.use('/admin', adminRouter)
+app.use('/admin', userIsAdminMDW,adminRouter)
 
 
 app.use('/', rootPath.handler);
