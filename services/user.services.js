@@ -20,7 +20,7 @@ const getUser = async (req, userId) => {
     if (req.session.user.id == userId) {
       const user = await users.findByPk(userId, { include: { all: true } });
       if (user) {
-        console.log(user.firstName);
+        console.log(user.first_name);
       }
       return user;
     } else {
