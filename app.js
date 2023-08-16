@@ -44,10 +44,10 @@ const sess = {
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: {
-    sameSite: "strict",
-    secure: true,
-  },
+  // cookie: {
+  //   sameSite: "strict",
+  //   secure: true,
+  // },
 };
 if (config.environment === "production") {
   app.set("trust proxy", 1); // trust first proxy
@@ -74,6 +74,7 @@ const corsOptions = {
       callback(new Error("Not allowed by CORS"));
     }
   },
+  credentials: true, // Add this line to allow credentials
 };
 app.use(cors(corsOptions));
 

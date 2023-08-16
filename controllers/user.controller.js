@@ -11,7 +11,7 @@ const createUser = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const user = await userService.getUser(req.params.userId);
+    const user = await userService.getUser(req, req.params.userId);
     if (!user) {
       res.status(404).json({ action: "getUser", error: "User Not Found" });
     } else {
@@ -37,7 +37,7 @@ const getAllUsers = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const user = await userService.updateUser(req.params.userId, req.body);
+    const user = await userService.updateUser(req.session.user.id, req.params.userId, req.body);
     if (!user) {
       res.status(404).json({ action: "updateUser", error: "User Not Found" });
     } else {
@@ -51,7 +51,7 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const user = await userService.deleteUser(req.params.userId);
+    const user = await userService.deleteUser(req.session.user.id, req.params.userId);
     if (!user) {
       res.status(404).json({ action: "deleteUser", error: "User Not Found" });
     } else {
