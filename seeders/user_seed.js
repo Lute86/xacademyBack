@@ -8,14 +8,17 @@ module.exports = {
     await queryInterface.sequelize.query(`
       INSERT INTO users (first_name, last_name, email, role, password)
       VALUES
-        ('Admin', 'Admin', 'michael.johnson@example.com', 'admin', 'hashed_password'),
-        ('Emily', 'Brown', 'emily.brown@example.com', 'user', 'hashed_password'),
-        ('David', 'Lee', 'david.lee@example.com', 'user', 'hashed_password'),
-        ('Sarah', 'Taylor', 'sarah.taylor@example.com', 'user', 'hashed_password'),
-        ('Robert', 'Wilson', 'robert.wilson@example.com', 'user', 'hashed_password'),
-        ('Ava', 'Martinez', 'ava.martinez@example.com', 'user', 'hashed_password'),
-        ('Daniel', 'Garcia', 'daniel.garcia@example.com', 'user', 'hashed_password'),
-        ('Sophia', 'Robinson', 'sophia.robinson@example.com', 'user', 'hashed_password');
+        ('Michael', 'Johnson', 'admin@admin.com', 'admin', '$2a$10$FLJohaWINTixIla8OrHyEeG15iv3JwFxeOcslKJ.EbkItXP4frciK
+        '),
+        ('Emily', 'Brown', 'emily@user.com', 'user', '$10$WrK1ETh.oFRnNR5SIFA48.MapB.NFUPaQnIU92sF/NtQTcorfERdq
+        '),
+        ('David', 'Lee', 'david.lee@example.com', 'user', '$10$WrK1ETh.oFRnNR5SIFA48.MapB.NFUPaQnIU92sF/NtQTcorfERdq
+        '),
+        ('Sarah', 'Taylor', 'sarah.taylor@example.com', 'user', '$2b$10$MUvhwt/1mOHi1fLfxdKZce45o852G7Vuv9CF18QgD5Gr2.dZFAE3a'),
+        ('Robert', 'Wilson', 'robert.wilson@example.com', 'user', '$2b$10$MUvhwt/1mOHi1fLfxdKZce45o852G7Vuv9CF18QgD5Gr2.dZFAE3a'),
+        ('Ava', 'Martinez', 'ava.martinez@example.com', 'user', '$2b$10$MUvhwt/1mOHi1fLfxdKZce45o852G7Vuv9CF18QgD5Gr2.dZFAE3a'),
+        ('Daniel', 'Garcia', 'daniel.garcia@example.com', 'user', '$2b$10$MUvhwt/1mOHi1fLfxdKZce45o852G7Vuv9CF18QgD5Gr2.dZFAE3a'),
+        ('Sophia', 'Robinson', 'sophia.robinson@example.com', 'user', '$2b$10$MUvhwt/1mOHi1fLfxdKZce45o852G7Vuv9CF18QgD5Gr2.dZFAE3a');
     `);
   },
 

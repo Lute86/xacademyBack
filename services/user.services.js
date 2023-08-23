@@ -1,10 +1,15 @@
 const { users } = require("../models");
+const bcrypt = require('bcrypt');
+
 
 const createUser = async (user) => {
   try {
-    //defaultValue user
-    // Set the role to "user" in the user object before creating it, extra security
+    // Hash the password before creating the user
+    const hashedPassword = await bcrypt.hash(user.password, 10); // 10 is the saltRounds
+
+    // Set the role and hashed password in the user object before creating it
     user.role = "user";
+    user.password = hashedPassword;
 
     const newUser = await users.create(user);
     return newUser;
