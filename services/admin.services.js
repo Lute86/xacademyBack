@@ -1,9 +1,15 @@
 const {users, teachers, courses} = require("../models");
 const { Op } = require('sequelize');
 const db = require('../models');
+const bcrypt = require('bcrypt');
+
 
 const createUser = async (user) => {
   try {
+    // Hash the password before creating the user
+    const hashedPassword = await bcrypt.hash(user.password, 10); // 10 is the saltRounds
+    user.password = hashedPassword;
+
     //defaultValue role user
     const newUser = await users.create(user);
     return newUser;
