@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-
+const { validateRegistration } = require('../middleware/validation.middleware')
 const { authController, userController } = require('../controllers/index.controller');
 
 
-router.post("/register", userController.createUser);
+router.post("/register", validateRegistration, userController.createUser);
 
-router.post("/login", authController.validateUser); //FUNCIONA
+router.post("/login", authController.validateUser); 
 
 router.post('/logout', (req, res) => {
   // Clear the user's session data
