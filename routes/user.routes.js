@@ -29,6 +29,8 @@ router.put('/my/unsubscription/:userId', userController.unsubscribeUser)
 //DELETE
 //delete user
 router.delete("/delete/:userId", userController.deleteUser);
+//delete specified course from user
+router.delete("/:userId/removeCourse/:courseId", userController.removeCourseFromUser);
 
 
 

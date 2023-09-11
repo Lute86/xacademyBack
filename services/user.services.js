@@ -152,6 +152,35 @@ const addCourseToUser = async (req, userId, courseId) => {
   }
 };
 
+
+const removeCourseFromUser = async (req, userId, courseId) => {
+  try {
+    //Validates the right user
+    if (req.session.user.id == userId) {
+      const user = await users.findByPk(userId);
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      const course = await courses.findByPk(courseId);
+
+      if (!course) {
+        throw new Error("Course not found");
+      }
+
+      await user.removeCourse(course);
+      return { message: "Course removed from the user successfully" };
+    } else {
+      return {message: "Access forbidden"};
+    }
+
+  } catch (err) {
+    console.error("Error removing course from user", err);
+    throw err;
+  }
+};
+
 const getUserCourses = async (req, userId) => {
   try {
     // Validates that user id is the same as the id being fetched
@@ -233,4 +262,5 @@ module.exports = {
   subscribeUser,
   unsubscribeUser,
   getUserStatus,
+  removeCourseFromUser,
 };
