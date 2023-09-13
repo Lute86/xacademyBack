@@ -1,5 +1,7 @@
-const { users } = require("../models");
-const bcrypt = require('bcrypt');
+const { users, courses } = require("../models");
+const bcrypt = require("bcrypt");
+const { models } = require('../config/files/sequelize.config');
+
 
 
 const createUser = async (user) => {
@@ -23,10 +25,28 @@ const getUser = async (req, userId) => {
   try {
     //Validates that user id is the same as the id being fetched
     if (req.session.user.id == userId) {
-      const user = await users.findByPk(userId, { include: { all: true } });
+      const user = await users.findByPk(userId, {
+        attributes: ['first_name', 'last_name', 'email', 'subscribed'],
+      });
       if (user) {
         console.log(user.first_name);
       }
+      return user;
+    } else {
+      throw new Error("Access forbidden. Can't access other users data");
+    }
+  } catch (err) {
+    console.error("Error when fetching User", err);
+    throw err;
+  }
+};
+
+const getUserStatus = async (req, userId) => {
+  try {
+    //Validates that user id is the same as the id being fetched
+    if (req.session.user.id == userId) {
+      const user = await users.findByPk(userId);
+
       return user;
     } else {
       throw new Error("Access forbidden. Can't access other users data");
@@ -62,6 +82,14 @@ const updateUser = async (id, userId, updates) => {
       if (finalUpdates.hasOwnProperty("role")) {
         finalUpdates.role = "user";
       }
+      if (finalUpdates.hasOwnProperty("subscribed")) {
+        // Exclude the "subscribed" property from being updated
+        delete finalUpdates.subscribed;
+      }
+      if (finalUpdates.hasOwnProperty("password")) {
+        // Exclude the "password" property from being updated
+        delete finalUpdates.password;
+      }
 
       const updatedUser = await user.update(finalUpdates);
       return updatedUser;
@@ -86,7 +114,7 @@ const deleteUser = async (id, userId) => {
       //Delete User
       await user.destroy();
       return user;
-    }else {
+    } else {
       throw new Error("Access forbidden. Can't modify other users data");
     }
   } catch (err) {
@@ -95,4 +123,144 @@ const deleteUser = async (id, userId) => {
   }
 };
 
-module.exports = { createUser, getUser, updateUser, deleteUser, getAllUsers };
+//Add course to user
+const addCourseToUser = async (req, userId, courseId) => {
+  try {
+    //Validates the right user
+    if (req.session.user.id == userId && req.session.user.subscribed == true) {
+      const user = await users.findByPk(userId);
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      const course = await courses.findByPk(courseId);
+
+      if (!course) {
+        throw new Error("Course not found");
+      }
+
+      await user.addCourse(course);
+      return { message: "Course added to the user successfully" };
+    } else {
+      return {message: "Access forbidden. Can't add course without subscription"};
+    }
+
+  } catch (err) {
+    console.error("Error adding course to user", err);
+    throw err;
+  }
+};
+
+
+const removeCourseFromUser = async (req, userId, courseId) => {
+  try {
+    //Validates the right user
+    if (req.session.user.id == userId) {
+      const user = await users.findByPk(userId);
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      const course = await courses.findByPk(courseId);
+
+      if (!course) {
+        throw new Error("Course not found");
+      }
+
+      await user.removeCourse(course);
+      return { message: "Course removed from the user successfully" };
+    } else {
+      return {message: "Access forbidden"};
+    }
+
+  } catch (err) {
+    console.error("Error removing course from user", err);
+    throw err;
+  }
+};
+
+const getUserCourses = async (req, userId) => {
+  try {
+    // Validates that user id is the same as the id being fetched
+    if (req.session.user.id == userId) {
+      const user = await users.findByPk(userId, {
+        include: [{ all:true }],
+      });
+      return user.courses; // Return the courses associated with the user
+    } else {
+      throw new Error("Access forbidden. Can't access other users' courses");
+    }
+  } catch (err) {
+    console.error("Error when fetching User", err);
+    throw err;
+  }
+};
+
+
+const subscribeUser = async (req, userId) => {
+  try {
+    // Find the user by their primary key (id)
+    const user = await users.findByPk(userId);
+
+    // Check if the user exists
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Check if the user id matches the session user id
+    if (req.session.user.id == userId) {
+      // Update the user's `subscribed` status to true
+      await user.update({subscribed:true});
+      // Send a success response
+      return "User subscribed successfully";
+    } else {
+      throw new Error("Access forbidden. Can't subscribe");
+    }
+  } catch (err) {
+    console.error("Error when subscribing User", err);
+    throw err;
+  }
+};
+
+const unsubscribeUser = async (req, userId) => {
+  try {
+    // Find the user by their primary key (id)
+    const user = await users.findByPk(userId);
+
+    // Check if the user exists
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Check if the user id matches the session user id
+    if (req.session.user.id == userId) {
+      // Update the user's `subscribed` status to true
+      await user.update({subscribed:false});
+      // Send a success response
+      return "User subscribed successfully";
+    } else {
+      throw new Error("Access forbidden. Can't subscribe");
+    }
+  } catch (err) {
+    console.error("Error when subscribing User", err);
+    throw err;
+  }
+};
+
+
+
+module.exports = {
+  createUser,
+  getUser,
+  updateUser,
+  deleteUser,
+  getAllUsers,
+  addCourseToUser,
+  getUserCourses,
+  subscribeUser,
+  unsubscribeUser,
+  getUserStatus,
+  removeCourseFromUser,
+};
