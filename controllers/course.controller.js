@@ -9,19 +9,6 @@ const createCourse = async (req, res) => {
   }
 };
 
-const getCourse = async (req, res) => {
-  try {
-    const course = await courseService.getCourse(req.params.courseId);
-    if (!course) {
-      res.status(404).json({ action: "getCourse", error: "Course Not Found" });
-    } else {
-      res.json(course);
-    }
-  } catch (err) {
-    res.status(500).json({ action: "getCourse", error: err.message });
-  }
-};
-
 const getCourseByCriteria = async (req, res) => {
   try {
     const options = {
@@ -31,7 +18,7 @@ const getCourseByCriteria = async (req, res) => {
       type: req.params.param,
     };
 
-    const course = await courseService.getCourseByCriteria(options);
+    const course = await courseService.getCourseByCriteria(req, options);
     if (!course) {
       res.status(404).json({ action: "getCourse", error: "Course Not Found" });
     } else {
@@ -44,7 +31,7 @@ const getCourseByCriteria = async (req, res) => {
 
 const getAllCourses = async (req, res) => {
   try {
-    const course = await courseService.getAllCourses();
+    const course = await courseService.getAllCourses(req);
     if (!course) {
       res.status(404).json({ action: "getAllCourses", error: "Course Not Found" });
     } else {
@@ -85,4 +72,4 @@ const deleteCourse = async (req, res) => {
 
 
 
-module.exports = { createCourse, getCourse, getAllCourses, deleteCourse, updateCourse, getCourseByCriteria };
+module.exports = { createCourse, getAllCourses, deleteCourse, updateCourse, getCourseByCriteria };

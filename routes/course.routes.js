@@ -6,7 +6,6 @@ const {courseController} = require('../controllers/index.controller');
 
 
 router.get("/all", courseController.getAllCourses)  
-//router.get("/:courseId", courseController.getCourse)
 router.get("/:param", courseController.getCourseByCriteria)
 
 

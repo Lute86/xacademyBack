@@ -1,6 +1,5 @@
-const { courses } = require("../models");
-const { Op } = require('sequelize')
-
+const { courses, teachers } = require("../models");
+const { Op } = require("sequelize");
 
 const createCourse = async (course) => {
   try {
@@ -12,43 +11,83 @@ const createCourse = async (course) => {
   }
 };
 
-const getCourse = async (courseId) => {
+const getCourseByCriteria = async (req, options) => {
   try {
-    //TODO => modify include, just teachers , { include: [teachers] }
-    const course = await courses.findByPk(courseId);
-    if (course) {
-      console.log(course.course_name);
-    }
-    return course;
-  } catch (err) {
-    console.error("Error when fetching Course", err);
-    throw err;
-  }
-};
-
-const getCourseByCriteria = async (options) => {
-  try {
-    const course = await courses.findAll({
-      where: {
-        [Op.or]: [
-          { id: options.id },
-          { course_name: options.course_name },
-          { modality: options.modality },
-          { type: options.type },
+    //Return full course information if admin, else necessary info
+    if (req.session.user && req.session.user.role == "admin") {
+      const course = await courses.findAll({
+        where: {
+          [Op.or]: [
+            { id: options.id },
+            { course_name: options.course_name },
+            { modality: options.modality },
+            { type: options.type },
+          ],
+        },
+        attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"] },
+        include: [
+          {
+            model: teachers,
+            as: "teachers",
+          },
         ],
-      },
-    });
-    return course;
+      });
+      return course;
+    } else {
+      const course = await courses.findAll({
+        where: {
+          [Op.or]: [
+            { id: options.id },
+            { course_name: options.course_name },
+            { modality: options.modality },
+            { type: options.type },
+          ],
+        },
+        attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"] },
+        include: [
+          {
+            model: teachers,
+            as: "teachers",
+            through: { attributes: [] },
+            attributes: ["first_name", "last_name"],
+          },
+        ],
+      });
+      return course;
+    }
   } catch (err) {
     console.error("Error when fetching Course", err);
     throw err;
   }
 };
 
-const getAllCourses = async () => {
+const getAllCourses = async (req) => {
   try {
-    const course = await courses.findAll();
-    return course;
+    //Return full course information if admin, else necessary info
+    if (req.session.user && req.session.user.role == "admin") {
+      const course = await courses.findAll({
+        include: [
+          {
+            model: teachers,
+            as: "teachers",
+          },
+        ],
+      });
+      return course;
+    } else {
+      const course = await courses.findAll({
+        attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"] },
+        include: [
+          {
+            model: teachers,
+            as: "teachers",
+            through: { attributes: [] },
+            attributes: ["first_name", "last_name"],
+          },
+        ],
+      });
+      return course;
+    }
   } catch (err) {
     console.error("Error when fetching Course", err);
     throw err;
@@ -86,5 +125,10 @@ const deleteCourse = async (courseId) => {
   }
 };
 
-
-module.exports = { createCourse, getCourse, getAllCourses, deleteCourse, updateCourse, getCourseByCriteria };
+module.exports = {
+  createCourse,
+  getAllCourses,
+  deleteCourse,
+  updateCourse,
+  getCourseByCriteria,
+};
