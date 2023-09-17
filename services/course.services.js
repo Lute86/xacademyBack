@@ -24,7 +24,6 @@ const getCourseByCriteria = async (req, options) => {
             { type: options.type },
           ],
         },
-        attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"] },
         include: [
           {
             model: teachers,
