@@ -1,6 +1,5 @@
 const { users, courses } = require("../models");
 const bcrypt = require("bcrypt");
-const { models } = require('../config/files/sequelize.config');
 
 
 
@@ -90,6 +89,10 @@ const updateUser = async (id, userId, updates) => {
         // Exclude the "password" property from being updated
         delete finalUpdates.password;
       }
+      if (finalUpdates.hasOwnProperty("subscribed")) {
+        // Exclude the "password" property from being updated
+        delete finalUpdates.subscribed;
+      }
 
       const updatedUser = await user.update(finalUpdates);
       return updatedUser;
@@ -123,7 +126,6 @@ const deleteUser = async (id, userId) => {
   }
 };
 
-//Add course to user
 const addCourseToUser = async (req, userId, courseId) => {
   try {
     //Validates the right user
@@ -151,7 +153,6 @@ const addCourseToUser = async (req, userId, courseId) => {
     throw err;
   }
 };
-
 
 const removeCourseFromUser = async (req, userId, courseId) => {
   try {
@@ -183,7 +184,7 @@ const removeCourseFromUser = async (req, userId, courseId) => {
 
 const getUserCourses = async (req, userId) => {
   try {
-    // Validates that user id is the same as the id being fetched
+    // Validates user id
     if (req.session.user.id == userId) {
       const user = await users.findByPk(userId, {
         include: [{ all:true }],
@@ -198,23 +199,45 @@ const getUserCourses = async (req, userId) => {
   }
 };
 
+const payment = async (req, userId) => {
+  const { name, cardNumber, expiryDate, cardCvv} = req.body
+  try {
+    if(req.session.user.id == userId){
+      // Simulate payment verification with a 70% chance of success
+      const success = Math.random() < 0.7;
+      // Simulate petition delay
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      if (success) {
+        req.session.user.paymentStatus = true
+        return true
+      } else {
+        return false // Payment failed
+      }
+    }
+    else{
+      throw new Error("Access forbidden. Payment denied") 
+    }
+  } catch (err) {
+    console.error("Error when processing payment", err);
+    throw err;
+  }
+}
 
 const subscribeUser = async (req, userId) => {
   try {
-    // Find the user by their primary key (id)
+  
     const user = await users.findByPk(userId);
 
-    // Check if the user exists
     if (!user) {
       throw new Error("User not found");
     }
 
-    // Check if the user id matches the session user id
+    // Validate id
     if (req.session.user.id == userId) {
       // Update the user's `subscribed` status to true
       await user.update({subscribed:true});
-      // Send a success response
-      return "User subscribed successfully";
+      
+      return true;
     } else {
       throw new Error("Access forbidden. Can't subscribe");
     }
@@ -226,25 +249,24 @@ const subscribeUser = async (req, userId) => {
 
 const unsubscribeUser = async (req, userId) => {
   try {
-    // Find the user by their primary key (id)
+
     const user = await users.findByPk(userId);
 
-    // Check if the user exists
     if (!user) {
       throw new Error("User not found");
     }
 
-    // Check if the user id matches the session user id
+    // Validate id
     if (req.session.user.id == userId) {
       // Update the user's `subscribed` status to true
       await user.update({subscribed:false});
-      // Send a success response
-      return "User subscribed successfully";
+      
+      return true;
     } else {
-      throw new Error("Access forbidden. Can't subscribe");
+      throw new Error("Access forbidden. Can't unsubscribe");
     }
   } catch (err) {
-    console.error("Error when subscribing User", err);
+    console.error("Error when unsubscribing User", err);
     throw err;
   }
 };
@@ -259,8 +281,9 @@ module.exports = {
   getAllUsers,
   addCourseToUser,
   getUserCourses,
+  payment,
   subscribeUser,
   unsubscribeUser,
   getUserStatus,
-  removeCourseFromUser,
+  removeCourseFromUser
 };
