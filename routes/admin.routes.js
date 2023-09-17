@@ -33,7 +33,6 @@ router.post('/user/:userId/course/:courseId', adminController.addCourseToUser);
 
 //deleted
 router.get('/deleted/:param', adminController.getAllDeleted) // => :param = teachers, courses, users
-//router.get('/deleted/course', adminController.getAllDeletedCourses)
 
 
 

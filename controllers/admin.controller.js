@@ -84,20 +84,6 @@ const deleteUser = async (req, res) => {
   }
 }
 
-
-// const getAllDeletedCourses = async (req, res) => {
-//   try {
-//     const courses = await adminService.getAllDeletedCourses();
-//     if (!courses) {
-//       res.status(404).json({ action: "getAllDeletedCourses", error: "Deleted courses Not Found" });
-//     } else {
-//       res.json(courses);
-//     }
-//   } catch (err) {
-//     res.status(500).json({ action: "getAllDeletedCourses", error: err.message });
-//   }
-// };
-
 const getAllDeleted = async (req, res) => {
   const modelName = req.params.param; // Assuming the model name is provided as a URL parameter, e.g., 'course', 'user', 'teacher'
 

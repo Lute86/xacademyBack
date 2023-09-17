@@ -3,7 +3,6 @@ const router = express.Router();
 const { userController } = require('../controllers/index.controller')
 
 
-
 //GET
 //ping
 router.get('/my/status/:userId', userController.getUserStatus)
@@ -15,6 +14,8 @@ router.get('/my/courses/:userId', userController.getUserCourses)
 //POST
 //add specified course to the user
 router.post('/:userId/addCourse/:courseId', userController.addCourseToUser)
+//payment
+router.post('/:userId/payment', userController.payment)
 
 //PUT
 //update user info, only allowed fields

@@ -117,21 +117,6 @@ const deleteUser = async (userId) => {
   }
 };
 
-// const getAllDeletedCourses = async () => {
-//   try {
-//     const course = await courses.findAll({
-//       paranoid: false,
-//       where: {
-//         deletedAt: { [Op.ne]: null }, // Filter records where deletedAt is not null
-//       },
-//     });
-//     return course;
-//   } catch (err) {
-//     console.error("Error when fetching all deleted Courses", err);
-//     throw err;
-//   }
-// };
-
 const getAllDeleted = async (modelName) => {
   const model = db[modelName];
 
