@@ -1,9 +1,7 @@
-const ExpressValidator = require('express-validator');
-const { check } = require('express-validator');
-
+const { validationResult, check } = require('express-validator');
 
 function checkValidationResult(req, res, next) {
-  const result = ExpressValidator.validationResult(req);
+  const result = validationResult(req);
   if (result.isEmpty()) {
     return next();
   }
@@ -39,5 +37,6 @@ const validateRegistration = [
 ];
 
 module.exports = {
+  checkValidationResult,
   validateRegistration,
 }
