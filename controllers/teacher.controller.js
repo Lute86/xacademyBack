@@ -11,7 +11,11 @@ const createTeacher = async (req, res) => {
 
 const getTeacher = async (req, res) => {
   try {
-    const teacher = await teacherService.getTeacher(req.params.teacherId);
+    const options = {
+      id: req.params.param,
+      all: req.params.param == "all"
+    }
+    const teacher = await teacherService.getTeacher(options);
     if (!teacher) {
       res.status(404).json({ action: "getTeacher", error: "Teacher Not Found" });
     } else {
