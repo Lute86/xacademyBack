@@ -1,6 +1,8 @@
 const express = require("express");
 const { adminController, courseController, queryController, teacherController, userController } = require("../controllers/index.controller");
+const { validateCourse } = require("../middleware/courseValidation.mdw");
 const router = express.Router();
+
 
 
 //queries
@@ -16,7 +18,7 @@ router.delete('/user/delete/:userId', adminController.deleteUser)
 
 //courses
 router.get('/course/related/:courseId', adminController.getFullCourse)
-router.post("/course/create", courseController.createCourse) 
+router.post("/course/create", validateCourse, courseController.createCourse) 
 router.put('/course/update/:courseId', courseController.updateCourse)
 router.delete('/course/delete/:courseId', courseController.deleteCourse) 
 
