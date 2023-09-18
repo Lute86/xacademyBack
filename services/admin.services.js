@@ -40,6 +40,19 @@ const getUserByCriteria = async (options) => {
   }
 };
 
+const updateUser = async (userId, updates) => {
+  try {
+    const user = await users.findByPk(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const updatedUser = await user.update(updates);
+    return updatedUser;
+  } catch (err) {
+    console.error("Error when updating User", err);
+    throw err;
+  }
+};
 
 const getFullCourse = async (courseId) => {
   try {
@@ -138,4 +151,4 @@ const getAllDeleted = async (modelName) => {
   }
 };
 
-module.exports = { createUser, getUserByCriteria, addCourseToTeacher, addCourseToUser, getAllDeleted, getFullCourse, deleteUser };
+module.exports = { createUser, getUserByCriteria, updateUser, addCourseToTeacher, addCourseToUser, getAllDeleted, getFullCourse, deleteUser };

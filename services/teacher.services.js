@@ -13,9 +13,13 @@ const createTeacher = async (user) => {
 };
 
 
-const getTeacher = async (teacherId) => {
+const getTeacher = async (options) => {
   try {
-    const teacher = await teachers.findByPk(teacherId, { include: { all: true } });
+    if(options.all){
+      const allTeachers = await teachers.findAll();
+      return allTeachers;
+    }
+    const teacher = await teachers.findByPk(options.id, { include: { all: true } });
     if (teacher) {
       console.log(teacher.firstName);
     }

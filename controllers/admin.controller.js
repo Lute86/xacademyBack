@@ -1,4 +1,4 @@
-const  adminService  = require("../services/admin.services");
+const adminService = require("../services/admin.services");
 
 const createUser = async (req, res) => {
   try {
@@ -31,7 +31,18 @@ const getUserByCriteria = async (req, res) => {
   }
 };
 
-
+const updateUser = async (req, res) => {
+  try {
+    const user = await adminService.updateUser(req.params.userId, req.body);
+    if (!user) {
+      res.status(404).json({ action: "updateUser", error: "User Not Found" });
+    } else {
+      res.json(user);
+    }
+  } catch (err) {
+    res.status(500).json({ action: "updateUser", error: err.message });
+  }
+}
 
 const getFullCourse = async (req, res) => {
   try {
@@ -99,4 +110,4 @@ const getAllDeleted = async (req, res) => {
   }
 };
 
-module.exports = { createUser, getUserByCriteria, addCourseToTeacher, addCourseToUser, getAllDeleted, getFullCourse, deleteUser };
+module.exports = { createUser, getUserByCriteria, updateUser, addCourseToTeacher, addCourseToUser, getAllDeleted, getFullCourse, deleteUser };
