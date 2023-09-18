@@ -1,7 +1,7 @@
 const express = require("express");
 const { adminController, courseController, queryController, teacherController, userController } = require("../controllers/index.controller");
-const { validateCourse } = require("../middleware/courseValidation.mdw");
-const { validateRegistration } = require("../middleware/validation.middleware");
+const { validateCourse } = require("../middleware/validations/courseValidation.mdw");
+const { validateRegistration } = require("../middleware/validations/validation.middleware");
 const router = express.Router();
 
 
