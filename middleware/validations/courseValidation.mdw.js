@@ -12,7 +12,7 @@ const validateDescription = check('description')
 const validateModality = check('modality')
   .trim()
   .notEmpty().withMessage('Modality is required')
-  .isIn(['in-person', 'hybrid', 'online']).withMessage('Invalid modality');
+  .isIn(['in-person', 'hybrid', 'online']).withMessage('Invalid modality. (in-person, hybrid, online)');
 
 const validateDuration = check('duration')
   .trim()
@@ -53,5 +53,6 @@ const validateCourse = [
 ];
 
 module.exports = {
+  validateDescription,
   validateCourse,
 };

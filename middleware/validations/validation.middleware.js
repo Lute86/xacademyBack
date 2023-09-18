@@ -37,6 +37,8 @@ const validateRegistration = [
 ];
 
 module.exports = {
+  validateEmail,
+  validateFirstName,
   checkValidationResult,
   validateRegistration,
 }
