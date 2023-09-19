@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { userController } = require('../controllers/index.controller')
+const { userController } = require('../controllers/index.controller');
+const { validateRegistration } = require('../middleware/validations/validation.middleware');
 
 
 //GET
@@ -19,7 +20,7 @@ router.post('/:userId/payment', userController.payment)
 
 //PUT
 //update user info, only allowed fields
-router.put("/update/:userId", userController.updateUser); //TODO validate updates(ie. email)
+router.put("/update/:userId", validateRegistration, userController.updateUser); //TODO validate updates(ie. email)
 //modify subscription status to true
 router.put('/my/subscription/:userId', userController.subscribeUser)
 //modify subscription status to false

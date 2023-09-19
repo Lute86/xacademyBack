@@ -75,27 +75,31 @@ const updateUser = async (id, userId, updates) => {
       if (!user) {
         throw new Error("User not found");
       }
-
-      // Ensure that the role remains as "user" if not provided in the updates object
-      const finalUpdates = { ...updates };
-      if (finalUpdates.hasOwnProperty("role")) {
-        finalUpdates.role = "user";
+      const passwordMatch = await bcrypt.compare(updates.password, user.password);
+      const hashedPassword = await bcrypt.hash(updates.password, 10);
+      updates.password = hashedPassword;
+      if (passwordMatch) {
+        // Ensure that the role remains as "user" if not provided in the updates object
+        const finalUpdates = { ...updates };
+        if (finalUpdates.hasOwnProperty("role")) {
+          finalUpdates.role = "user";
+        }
+        if (finalUpdates.hasOwnProperty("subscribed")) {
+          // Exclude the "subscribed" property from being updated
+          delete finalUpdates.subscribed;
+        }
+        if (finalUpdates.hasOwnProperty("new_password")) {
+          const hashedPassword = await bcrypt.hash(updates.new_password, 10); 
+          finalUpdates.password = hashedPassword;
+          delete finalUpdates.new_password;
+        }
+        
+        
+        const updatedUser = await user.update(finalUpdates);
+        return updatedUser;
+      } else {
+        throw new Error("Access forbidden. Invalid password");
       }
-      if (finalUpdates.hasOwnProperty("subscribed")) {
-        // Exclude the "subscribed" property from being updated
-        delete finalUpdates.subscribed;
-      }
-      if (finalUpdates.hasOwnProperty("password")) {
-        // Exclude the "password" property from being updated
-        delete finalUpdates.password;
-      }
-      if (finalUpdates.hasOwnProperty("subscribed")) {
-        // Exclude the "password" property from being updated
-        delete finalUpdates.subscribed;
-      }
-
-      const updatedUser = await user.update(finalUpdates);
-      return updatedUser;
     } else {
       throw new Error("Access forbidden. Can't modify other users data");
     }
