@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { userController } = require('../controllers/index.controller');
 const { validateRegistration } = require('../middleware/validations/validation.middleware');
-
+const { validatePayment } = require('../middleware/validations/paymentValidation.mdw')
 
 //GET
 //ping
@@ -16,7 +16,7 @@ router.get('/my/courses/:userId', userController.getUserCourses)
 //add specified course to the user
 router.post('/:userId/addCourse/:courseId', userController.addCourseToUser)
 //payment
-router.post('/:userId/payment', userController.payment)
+router.post('/:userId/payment', validatePayment, userController.payment)
 
 //PUT
 //update user info, only allowed fields
