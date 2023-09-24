@@ -19,5 +19,5 @@ const validateQuery = [
   checkValidationResult
 ]
 
-module.exports = {validateQuery}
+module.exports = {validateName, validateQuery}
 
