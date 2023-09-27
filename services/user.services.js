@@ -88,6 +88,15 @@ const updateUser = async (id, userId, updates) => {
           // Exclude the "subscribed" property from being updated
           delete finalUpdates.subscribed;
         }
+        if (finalUpdates.hasOwnProperty("createdAt")) {
+          delete finalUpdates.createdAt;
+        }
+        if (finalUpdates.hasOwnProperty("updatedAt")) {
+          delete finalUpdates.updatedAt;
+        }
+        if (finalUpdates.hasOwnProperty("deletedAt")) {
+          delete finalUpdates.deletedAt;
+        }
         if (finalUpdates.hasOwnProperty("new_password")) {
           const hashedPassword = await bcrypt.hash(updates.new_password, 10); 
           finalUpdates.password = hashedPassword;
