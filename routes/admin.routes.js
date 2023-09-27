@@ -4,7 +4,8 @@ const { validateCourse } = require("../middleware/validations/courseValidation.m
 const { validateRegistration } = require("../middleware/validations/validation.middleware");
 const router = express.Router();
 
-
+//ping
+router.get('/my/status/:userId', userController.getUserStatus)
 
 //queries
 router.get("/query/:param", queryController.getQueryByCriteria) // :param = id, "reason", all
