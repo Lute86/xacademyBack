@@ -28,7 +28,7 @@ const validateActive = check('active')
 
   const validateStartDate = check('start_date')
   .optional({ nullable: true, checkFalsy: true }) // Allow null or empty
-  .isISO8601({ strict: false }) // Validate as ISO 8601 date, but without strict time requirements ("2023-09-30" o "2023-09-30T00:00:00Z")
+  .isISO8601({ strict: false }) // Validate as ISO 8601 date, but without strict time requirements ("2023-09-30" or "2023-09-30T00:00:00Z")
 
 const validateFinishDate = check('finish_date')
   .optional({ nullable: true, checkFalsy: true })
@@ -51,8 +51,21 @@ const validateCourse = [
   validateType,
   checkValidationResult
 ];
+const validateCourseUpdate = [
+  validateCourseName.optional(),
+  validateDescription.optional(),
+  validateModality.optional(),
+  validateDuration.optional(),
+  validatePrice.optional(),
+  validateActive.optional(),
+  validateStartDate.optional(),
+  validateFinishDate.optional(),
+  validateType.optional(),
+  checkValidationResult
+];
 
 module.exports = {
   validateDescription,
+  validateCourseUpdate,
   validateCourse,
 };

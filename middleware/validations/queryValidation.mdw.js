@@ -1,6 +1,8 @@
-const { checkValidationResult, validateEmail } = require('./validation.middleware');
+const { validateEmail } = require('./registrationValidation.mdw');
 const { validateDescription } = require('./courseValidation.mdw');
 const { check } = require('express-validator');
+const { checkValidationResult } = require('./validation.middleware')
+
 
 const validateName = check('name')
 .trim()
