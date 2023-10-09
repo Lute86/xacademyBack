@@ -23,6 +23,18 @@ const routes = require("./routes");
 const config = require("./config/config");
 const validateEnv = require("./utils/validateEnv");
 
+process.on('unhandledException', (error) => {
+  console.error('Unhandled Exception:', error);
+  logger.api.error('Unhandled Exception:', error); 
+  // TODO cleanup and restart logic, or use pm2 library
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection:', reason);
+  logger.api.error('Unhandled Rejection:', reason); 
+  // TODO cleanup and restart logic, or use pm2 library
+});
+
 const app = express();
 validateEnv.validate();
 app.use(helmet());
