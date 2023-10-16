@@ -20,8 +20,11 @@ const getQueryByCriteria = async (req, res) => {
     const query = await queryService.getQueryByCriteria(options);
     if (!query) {
       res.status(404).json({ action: "getQuery", error: "Query Not Found" });
-    } else {
-      res.json(query);
+    }else if(query.status === 400){
+      res.status(400).json(query)
+    } 
+    else {
+      res.status(200).json(query);
     }
   } catch (err) {
     res.status(500).json({ action: "getQuery", error: err.message });
@@ -31,13 +34,11 @@ const getQueryByCriteria = async (req, res) => {
 const deleteQuery = async (req, res) => {
   try {
     const query = await queryService.deleteQuery(req.params.queryId);
-    if (!query) {
-      res.status(404).json({ action: "deleteQuery", error: "Query Not Found" });
-    } else {
-      res.json(query);
-    }
+    if(query.status===404) 
+      return res.status(404).json({action: "deleteQuery", message: `Query with id:${req.params.queryId} not found`}) 
+    return res.status(200).json(query);
   } catch (err) {
-    res.status(500).json({ action: "deleteQuery", error: err.message });
+    return res.status(500).json(err.message);
   }
 };
 

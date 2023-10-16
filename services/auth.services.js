@@ -1,23 +1,20 @@
-const { users } = require("../models");
+const authProvider = require("../providers/auth.providers");
 const bcrypt = require('bcrypt');
 
 const validateUser = async (credentials) => {
-  const { email, password } = credentials;
+  const { password } = credentials;
   try {
-    const user = await users.findOne({
-      where: {
-        email: email,
-      },
-    });
+    const user = await authProvider.validateUser(credentials);
 
     if (user) {
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (passwordMatch) {
         return user;
       }
+      return {status: 400, message:"Password doesn't match", user:null}
     }
 
-    return null; // Return null if user is not found or password doesn't match
+    return {status: 404, message:'User not found', user:null}; 
   } catch (err) {
     throw new Error("Error when validating User: " + err.message);
   }
