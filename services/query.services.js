@@ -5,6 +5,12 @@ const createQuery = async (query) => {
   return newQuery;
 };
 
+const updateQuery = async (id, body) => {
+  if(Object.keys(body).length<1) body = {answered:'yes'}
+  const query = await queryProvider.updateQuery(id, body);
+  return query
+}
+
 const getQueryByCriteria = async (options) => {
   const allQueries = await queryProvider.getQueryByCriteria(options);
   if (allQueries.length < 1)
@@ -29,4 +35,4 @@ const deleteQuery = async (queryId) => {
   }
 };
 
-module.exports = { createQuery, getQueryByCriteria, deleteQuery };
+module.exports = { createQuery, getQueryByCriteria, deleteQuery, updateQuery };

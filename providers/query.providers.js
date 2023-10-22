@@ -11,6 +11,18 @@ const createQuery = async (query) => {
   }
 };
 
+const updateQuery = async(id, updates) => {
+  try {
+    const query = await queries.findByPk(id);
+    if(!query) throw new Error("Query not found");
+    const updatedQuery = await query.update(updates);
+    return updatedQuery;
+  } catch (error) {
+    console.error("Error when updating Query");
+    throw error;
+  }
+}
+
 const getQueryByCriteria = async (options) => {
   try {
     if (options.all) {
@@ -42,4 +54,4 @@ const deleteQuery = async (queryId) => {
   }
 };
 
-module.exports = { createQuery, getQueryByCriteria, deleteQuery };
+module.exports = { createQuery, getQueryByCriteria, deleteQuery, updateQuery };

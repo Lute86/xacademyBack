@@ -28,6 +28,7 @@
     "moment": "^2.29.4",
     "morgan": "~1.10.0",
     "mysql2": "^2.3.3",
+    "nodemailer": "6.9.6",
     "sequelize": "^6.29.0",
     "sequelize-cli": "^6.6.0",
     "winston": "^3.8.2",

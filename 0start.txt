@@ -20,6 +20,7 @@ sequelize db:create => crea la base con el nombre de base que se puso en el .env
 1. sequelize db:migrate --name models_tables
 2. sequelize db:migrate --name models_relations
 3. sequelize db:migrate --name user_subscription
+4. sequelize db:migrate --name query_answered
  
 
 Las migraciones van a crear las tablas basadas en los modelos en la base.
