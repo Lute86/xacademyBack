@@ -1,9 +1,11 @@
 const express = require("express");
-const { adminController, courseController, queryController, teacherController, userController } = require("../controllers/index.controller");
+const { adminController, courseController, queryController, teacherController, userController, emailController } = require("../controllers/index.controller");
 const { validateCourse, validateCourseUpdate } = require("../middleware/validations/courseValidation.mdw");
 const { validateRegistration } = require("../middleware/validations/registrationValidation.mdw");
 const { validateUpdate } = require("../middleware/validations/userValidation.mdw");
 const { validateTeacher, validateTeacherUpdate } = require("../middleware/validations/teacherValidation.mdw");
+const { validateMailer } = require("../middleware/validations/emailValidation.mdw");
+const { validateUpdateQuery } = require("../middleware/validations/queryValidation.mdw");
 const router = express.Router();
 
 //ping
@@ -12,6 +14,8 @@ router.get('/my/status/:userId', userController.getUserStatus)
 //queries
 router.get("/query/:param", queryController.getQueryByCriteria) // :param = id, "reason", all
 router.delete("/query/delete/:queryId", queryController.deleteQuery)
+router.post('/query/email', validateMailer, emailController.sendEmail)
+router.put('/query/:queryId', validateUpdateQuery, queryController.updateQuery)
 
 //users
 router.get('/user/param/:param', adminController.getUserByCriteria) // :param => id, first_name, last_name, role, email

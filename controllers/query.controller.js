@@ -9,6 +9,15 @@ const createQuery = async (req, res) => {
   }
 };
 
+const updateQuery = async(req, res) => {
+  try {
+    const query = await queryService.updateQuery(req.params.queryId, req.body);
+    res.status(200).json(query);
+  } catch (error) {
+    res.status(500).json({ action: "updateQuery", error: error.message });
+  }
+}
+
 const getQueryByCriteria = async (req, res) => {
   try {
     const options = {
@@ -42,4 +51,4 @@ const deleteQuery = async (req, res) => {
   }
 };
 
-module.exports = { createQuery, getQueryByCriteria, deleteQuery };
+module.exports = { createQuery, getQueryByCriteria, deleteQuery, updateQuery };

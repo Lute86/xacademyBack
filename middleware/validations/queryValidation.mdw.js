@@ -13,6 +13,10 @@ const validateReason = check('reason')
 .notEmpty().withMessage('Reason required')
 .isIn(['payment', 'enrollment', 'course', 'other']).withMessage('Invalid reason (payment, enrollment, course or other)')
 
+const validateAnswer = check('answered')
+.notEmpty().withMessage('Answered required')
+.isIn(['yes', 'no']).withMessage('Invalid answred (yes or no)')
+
 const validateQuery = [
   validateName,
   validateEmail,
@@ -21,5 +25,14 @@ const validateQuery = [
   checkValidationResult
 ]
 
-module.exports = {validateName, validateQuery}
+const validateUpdateQuery = [
+  validateName.optional(),
+  validateEmail.optional(),
+  validateReason.optional(),
+  validateDescription.optional(),
+  validateAnswer.optional(),
+  checkValidationResult
+]
+
+module.exports = {validateName, validateQuery, validateReason, validateUpdateQuery}
 
